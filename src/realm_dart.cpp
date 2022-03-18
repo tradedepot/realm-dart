@@ -73,6 +73,7 @@ void dummy(void) {
     gc_handle_new(nullptr);
     gc_handle_deref(nullptr);
     realm_http_transport_new(nullptr, nullptr, nullptr);
+    realm_app_config_new(nullptr, nullptr);
 #if (ANDROID)
     realm_android_dummy();
 #endif
