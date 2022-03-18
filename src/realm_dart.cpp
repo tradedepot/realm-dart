@@ -72,6 +72,7 @@ void dummy(void) {
     realm_app_credentials_new_anonymous();
     gc_handle_new(nullptr);
     gc_handle_deref(nullptr);
+    realm_http_transport_new(nullptr, nullptr, nullptr);
 #if (ANDROID)
     realm_android_dummy();
 #endif
