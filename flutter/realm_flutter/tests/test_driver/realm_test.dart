@@ -6,6 +6,8 @@ import 'package:test_api/src/backend/invoker.dart';
 // ignore: implementation_imports
 import 'package:test_api/src/backend/state.dart' as test_api;
 
+import '../test/application_test.dart' as application_test;
+import '../test/application_configuration_test.dart' as application_configuration;
 import '../test/configuration_test.dart' as configuration_test;
 import '../test/realm_test.dart' as realm_tests;
 import '../test/realm_object_test.dart' as realm_object_tests;
@@ -17,6 +19,8 @@ Future<String> main(List<String> args) async {
   final Completer<String> completer = Completer<String>();
   final List<String> failedTests = [];
 
+  await application_test.main(args);
+  await application_configuration.main(args);
   await configuration_test.main(args);
   await realm_tests.main(args);
   await realm_object_tests.main(args);
