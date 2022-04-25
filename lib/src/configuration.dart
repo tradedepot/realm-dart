@@ -48,11 +48,13 @@ typedef InitialDataCallback = void Function(Realm realm);
 /// Configuration used to create a [Realm] instance
 /// {@category Configuration}
 abstract class Configuration {
-
-  /// The default realm filename to be used. 
+  /// The default realm filename to be used.
   static String get defaultRealmName => _path.basename(defaultRealmPath);
   static set defaultRealmName(String name) => defaultRealmPath = _path.join(_path.dirname(defaultRealmPath), _path.basename(name));
-  
+
+  /// A collection of [SchemaObject] that will be used to construct the
+  /// [RealmSchema] once the Realm is opened.
+  final Iterable<SchemaObject> schemaObjects;
 
   /// The platform dependent path used to store realm files
   ///
@@ -63,23 +65,23 @@ abstract class Configuration {
   /// On Dart standalone Windows, macOS and Linux this is the current directory.
   static String get defaultStoragePath {
     if (isFlutterPlatform) {
-      return realmCore.getAppDirectory(); 
+      return realmCore.getAppDirectory();
     }
 
     return Directory.current.path;
   }
 
   /// The platform dependent path to the default realm file.
-  /// 
+  ///
   /// If set it should contain the path and the name of the realm file. Ex. "~/mypath/myrealm.realm"
   /// [defaultStoragePath] can be used to build this path.
   static late String defaultRealmPath = _path.join(defaultStoragePath, 'default.realm');
 
   Configuration._(
-    List<SchemaObject> schemaObjects, {
+    this.schemaObjects, {
     String? path,
     this.fifoFilesFallbackPath,
-  }) : schema = RealmSchema(schemaObjects) {
+  }) {
     this.path = path ?? _path.join(_path.dirname(_defaultPath), _path.basename(defaultRealmName));
   }
 
@@ -100,9 +102,6 @@ abstract class Configuration {
   ///
   /// If omitted the [defaultPath] for the platform will be used.
   late final String path;
-
-  /// The [RealmSchema] for this [Configuration]
-  final RealmSchema schema;
 
   //TODO: Not supported yet.
   // /// The key used to encrypt the entire [Realm].
@@ -286,7 +285,7 @@ extension FlexibleSyncConfigurationInternal on FlexibleSyncConfiguration {
 
 /// [DisconnectedSyncConfiguration] is used to open [Realm] instances that are synchronized
 /// with MongoDB Atlas, without establishing a connection to Atlas App Services. This allows
-/// for the synchronized realm to be opened in multiple processes concurrently, as long as 
+/// for the synchronized realm to be opened in multiple processes concurrently, as long as
 /// only one of them uses a [FlexibleSyncConfiguration] to sync changes.
 /// {@category Configuration}
 class DisconnectedSyncConfiguration extends Configuration {
@@ -332,12 +331,8 @@ class RealmSchema extends Iterable<SchemaObject> {
   late final List<SchemaObject> _schema;
 
   /// Initializes [RealmSchema] instance representing ```schemaObjects``` collection
-  RealmSchema(List<SchemaObject> schemaObjects) {
-    if (schemaObjects.isEmpty) {
-      throw RealmError("No schema specified");
-    }
-
-    _schema = schemaObjects;
+  RealmSchema(Iterable<SchemaObject> schemaObjects) {
+    _schema = schemaObjects.toList();
   }
 
   @override
