@@ -19,8 +19,6 @@
 import 'dart:convert';
 
 import 'native/realm_core.dart';
-import 'app.dart';
-import 'credentials.dart';
 import 'realm_class.dart';
 
 /// This class represents a user in a MongoDB Realm app.

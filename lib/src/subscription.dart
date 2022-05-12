@@ -126,7 +126,7 @@ enum SubscriptionSetState {
 /// downloading.
 /// {@category Sync}
 abstract class SubscriptionSet with IterableMixin<Subscription> {
-  Realm _realm;
+  final Realm _realm;
   SubscriptionSetHandle _handle;
 
   SubscriptionSet._(this._realm, this._handle);
@@ -235,6 +235,7 @@ class _ImmutableSubscriptionSet extends SubscriptionSet {
 /// A mutable view to a [SubscriptionSet]. Obtained by calling [SubscriptionSet.update].
 /// {@category Sync}
 class MutableSubscriptionSet extends SubscriptionSet {
+  @override
   final MutableSubscriptionSetHandle _handle;
 
   MutableSubscriptionSet._(Realm realm, this._handle) : super._(realm, _handle);

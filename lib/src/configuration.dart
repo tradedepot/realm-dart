@@ -18,7 +18,7 @@
 
 import 'dart:io';
 
-import 'package:path/path.dart' as _path;
+import 'package:path/path.dart' as path;
 
 import 'native/realm_core.dart';
 import 'realm_class.dart';
@@ -58,7 +58,7 @@ abstract class Configuration {
   static String _initDefaultPath() {
     var path = "default.realm";
     if (Platform.isAndroid || Platform.isIOS) {
-      path = _path.join(realmCore.getFilesPath(), path);
+      path = path.join(realmCore.getFilesPath(), path);
     }
     return path;
   }
@@ -66,7 +66,7 @@ abstract class Configuration {
   /// The platform dependent path to the default realm file - `default.realm`.
   ///
   /// If set it should contain the name of the realm file. Ex. /mypath/myrealm.realm
-  static late String defaultPath = _initDefaultPath();
+  static String defaultPath = _initDefaultPath();
 
   /// The platform dependent directory path used to store realm files
   ///

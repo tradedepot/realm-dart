@@ -78,7 +78,7 @@ class Archive {
               size: stat.size),
           // Use entry.openRead() to obtain an input stream for the file that the
           // writer will use later.
-          entry is File ? entry.openRead() : Stream.empty());
+          entry is File ? entry.openRead() : const Stream.empty());
     }
   }
 }

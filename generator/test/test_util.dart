@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
-import 'package:path/path.dart' as _path;
+import 'package:path/path.dart' as path;
 import 'package:dart_style/dart_style.dart';
 import 'package:build_test/build_test.dart';
 import 'package:test/test.dart';
@@ -11,12 +11,12 @@ Function executeTest = test;
 
 Map<String, String> getListOfTestFiles(String directory) {
   Map<String, String> result = {};
-  var files = Directory(_path.join(Directory.current.path, directory)).listSync();
+  var files = Directory(path.join(Directory.current.path, directory)).listSync();
   for (var file in files) {
-    if (_path.extension(file.path) == '.dart' && !file.path.endsWith('g.dart')) {
-      var expectedFileName = _path.setExtension(file.path, '.expected');
+    if (path.extension(file.path) == '.dart' && !file.path.endsWith('g.dart')) {
+      var expectedFileName = path.setExtension(file.path, '.expected');
       if (!files.any((f) => f.path == expectedFileName)) expectedFileName = '';
-      result.addAll({_path.basename(file.path): _path.basename(expectedFileName)});
+      result.addAll({path.basename(file.path): path.basename(expectedFileName)});
     }
   }
   return result;
@@ -82,20 +82,20 @@ class LinesEqualsMatcher extends Matcher {
 }
 
 Future<Map<String, Object>> getExpectedFileAsset(String inputFilePath, String expectedFilePath) async {
-  var key = 'pkg|${_path.setExtension(inputFilePath, '.realm_objects.g.part')}';
+  var key = 'pkg|${path.setExtension(inputFilePath, '.realm_objects.g.part')}';
   String expectedContent = await readFileAsDartFormattedString(expectedFilePath);
 
   return {key: LinesEqualsMatcher(expectedContent)};
 }
 
 Future<String> readFileAsDartFormattedString(String path) async {
-  var file = File(_path.join(Directory.current.path, path));
+  var file = File(path.join(Directory.current.path, path));
   String content = await file.readAsString(encoding: utf8);
   return _stringReplacements(content);
 }
 
 Future<String> readFileAsErrorFormattedString(String directoryName, String outputFilePath) async {
-  var file = File(_path.join(Directory.current.path, '$directoryName/$outputFilePath'));
+  var file = File(path.join(Directory.current.path, '$directoryName/$outputFilePath'));
   String content = await file.readAsString(encoding: utf8);
   if (Platform.isWindows) {
     var macToWinSymbols = {'╷': ',', '━': '=', '╵': '\'', '│': '|', '─': '-', '┌': ',', '└': '\''};
@@ -114,5 +114,5 @@ String _stringReplacements(String content) {
 }
 
 String getTestName(String file) {
-  return _path.basename(file.replaceAll('_', ' '));
+  return path.basename(file.replaceAll('_', ' '));
 }

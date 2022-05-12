@@ -563,7 +563,7 @@ Future<void> main([List<String>? args]) async {
 
     // Wait for realm2 to see the changes. This would not be necessary if we
     // cache native instances.
-    await Future<void>.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(const Duration(milliseconds: 1));
 
     expect(realm2.all<Person>().length, 1);
     expect(realm2.all<Person>().single.name, "Peter");

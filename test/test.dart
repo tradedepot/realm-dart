@@ -21,7 +21,6 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 import 'package:meta/meta.dart';
-import 'package:path/path.dart' as _path;
 import 'package:test/test.dart' hide test;
 import 'package:test/test.dart' as testing;
 import '../lib/realm.dart';
@@ -166,8 +165,8 @@ Future<void> setupTests(List<String>? args) async {
         } catch (e) {
           print("Can not delete realm at path: $path. Did you forget to close it?");
         }
-        String pathKey = _path.basenameWithoutExtension(path);
-        String realmDir = _path.dirname(path);
+        String pathKey = path.basenameWithoutExtension(path);
+        String realmDir = path.dirname(path);
         await Directory(realmDir).list().forEach((f) {
           if (f.path.contains(pathKey)) tryDeleteFile(f, recursive: true);
         });
@@ -181,9 +180,9 @@ Matcher throws<T>([String? message]) => throwsA(isA<T>().having((dynamic excepti
 String generateRandomRealmPath() {
   var path = "${generateRandomString(10)}.realm";
   if (Platform.isAndroid || Platform.isIOS) {
-    path = _path.join(Configuration.filesPath, path);
+    path = path.join(Configuration.filesPath, path);
   } else {
-    path = _path.join(Directory.systemTemp.createTempSync("realm_test_").path, path);
+    path = path.join(Directory.systemTemp.createTempSync("realm_test_").path, path);
   }
 
   return path;
@@ -191,8 +190,8 @@ String generateRandomRealmPath() {
 
 final random = Random();
 String generateRandomString(int len) {
-  const _chars = 'abcdefghjklmnopqrstuvwxuz';
-  return List.generate(len, (index) => _chars[random.nextInt(_chars.length)]).join();
+  const chars = 'abcdefghjklmnopqrstuvwxuz';
+  return List.generate(len, (index) => chars[random.nextInt(chars.length)]).join();
 }
 
 Realm getRealm(Configuration config) {

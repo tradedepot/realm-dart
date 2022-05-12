@@ -146,7 +146,7 @@ Future<void> main([List<String>? args]) async {
   });
 
   test('Configuration - disableFormatUpgrade=true throws error', () async {
-    final realmBundleFile = "test/data/realm_files/old-format.realm";
+    const realmBundleFile = "test/data/realm_files/old-format.realm";
     var config = Configuration([Car.schema], disableFormatUpgrade: true);
     await File(realmBundleFile).copy(config.path);
     expect(() {
@@ -155,7 +155,7 @@ Future<void> main([List<String>? args]) async {
   }, skip: isFlutterPlatform);
 
   test('Configuration - disableFormatUpgrade=false', () async {
-    final realmBundleFile = "test/data/realm_files/old-format.realm";
+    const realmBundleFile = "test/data/realm_files/old-format.realm";
     var config = Configuration([Car.schema], disableFormatUpgrade: false);
     await File(realmBundleFile).copy(config.path);
     final realm = getRealm(config);

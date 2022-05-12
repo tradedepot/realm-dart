@@ -102,7 +102,7 @@ class RealmModelInfo {
               if (f.realmType == RealmPropertyType.object) 'linkTarget': f.basicRealmTypeName,
               if (f.realmCollectionType != RealmCollectionType.none) 'collectionType': f.realmCollectionType,
             };
-            return "SchemaProperty('${f.realmName}', ${f.realmType}${namedArgs.isNotEmpty ? ', ' + namedArgs.toArgsString() : ''}),";
+            return "SchemaProperty('${f.realmName}', ${f.realmType}${namedArgs.isNotEmpty ? ', ${namedArgs.toArgsString()}' : ''}),";
           });
         }
         yield ']);';

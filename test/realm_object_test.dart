@@ -267,21 +267,21 @@ Future<void> main([List<String>? args]) async {
       }
     });
 
-    await Future<void>.delayed(Duration(milliseconds: 20));
+    await Future<void>.delayed(const Duration(milliseconds: 20));
     realm.write(() {
       dog.age = 2;
       dog.owner = Person("owner");
     });
 
-    await Future<void>.delayed(Duration(milliseconds: 20));
+    await Future<void>.delayed(const Duration(milliseconds: 20));
     realm.write(() {
       realm.delete(dog);
     });
 
-    await Future<void>.delayed(Duration(milliseconds: 20));
+    await Future<void>.delayed(const Duration(milliseconds: 20));
     subscription.cancel();
 
-    await Future<void>.delayed(Duration(milliseconds: 20));
+    await Future<void>.delayed(const Duration(milliseconds: 20));
   });
 
   void testPrimaryKey<T extends RealmObject, K extends Object>(SchemaObject schema, T Function() createObject, K key) {
