@@ -403,4 +403,19 @@ Future<void> main([List<String>? args]) async {
       expect(compactedRealm.all<Person>().length, dummyDataSize / 2);
     });
   }
+
+  baasTest("FlexibleSyncConfiguration set resync mode", (appConfiguration) async {
+    final app = App(appConfiguration);
+    final credentials = Credentials.anonymous();
+    final user = await app.logIn(credentials);
+    final configuration = FlexibleSyncConfiguration(user, [Task.schema, Schedule.schema], clientResyncMode: ClientResyncMode.discardLocal);
+    final realm = getRealm(configuration);
+    expect((realm.config as FlexibleSyncConfiguration).clientResyncMode, ClientResyncMode.discardLocal);
+    realm.close();
+
+    FlexibleSyncConfiguration(user, [Task.schema, Schedule.schema]);
+    final realmManualResync = getRealm(FlexibleSyncConfiguration(user, [Task.schema, Schedule.schema]));
+    expect((realmManualResync.config as FlexibleSyncConfiguration).clientResyncMode, ClientResyncMode.manual);
+    realmManualResync.close();
+  });
 }

@@ -56,7 +56,8 @@ export "configuration.dart"
         LocalConfiguration,
         RealmSchema,
         SchemaObject,
-        ShouldCompactCallback;
+        ShouldCompactCallback,
+        ClientResyncMode;
 
 export 'credentials.dart' show Credentials, AuthProviderType, EmailPasswordAuthProvider;
 export 'list.dart' show RealmList, RealmListOfObject, RealmListChanges;

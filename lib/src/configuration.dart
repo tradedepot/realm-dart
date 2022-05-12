@@ -96,8 +96,8 @@ abstract class Configuration {
   /// The [RealmSchema] for this [Configuration]
   final RealmSchema schema;
 
-  /// The key used to encrypt the entire [Realm]. 
-  /// 
+  /// The key used to encrypt the entire [Realm].
+  ///
   /// A full 64byte (512bit) key for AES-256 encryption.
   /// Once set, must be specified each time the file is used.
   final List<int>? encryptionKey;
@@ -200,6 +200,28 @@ enum SessionStopPolicy {
   afterChangesUploaded, // Once all Realms/Sessions go out of scope, wait for uploads to complete and stop.
 }
 
+/// Enum describing what should happen in case of a Client Resync.
+///
+/// A Client Resync is triggered if the device and server cannot agree
+/// on a common shared history for the Realm file,
+/// thus making it impossible for the device to upload or receive any changes.
+/// This can happen if the server is rolled back or restored from backup.
+/// {@category Application}
+enum ClientResyncMode {
+  /// A manual Client Resync is also known as a Client Reset.
+  ///
+  /// A `ClientResetRequiredError` will be sent to `SyncSession.ErrorHandler.onError(SyncSession, ObjectServerError)`,
+  /// triggering a Client Reset. Doing this provides a handle to both the old and new Realm file,
+  /// enabling full control of which changes to move, if any.
+  /// This is the only supported mode for Query-based Realms.
+  manual,
+
+  /// The local Realm will be discarded and replaced with the server side Realm.
+  /// All local changes will be lost.
+  /// This mode is not yet supported by Query-based Realms.
+  discardLocal,
+}
+
 /// [FlexibleSyncConfiguration] is used to open [Realm] instances that are synchronized
 /// with MongoDB Realm.
 /// {@category Configuration}
@@ -208,11 +230,17 @@ class FlexibleSyncConfiguration extends Configuration {
 
   SessionStopPolicy _sessionStopPolicy = SessionStopPolicy.afterChangesUploaded;
 
+  /// Value of [ClientResyncMode] describing what should happen in case of a Client Resync.
+  /// Default value is [ClientResyncMode.Manual].
+  final ClientResyncMode clientResyncMode;
+
+
   FlexibleSyncConfiguration(
     this.user,
     List<SchemaObject> schemaObjects, {
     String? fifoFilesFallbackPath,
     String? path,
+    this.clientResyncMode = ClientResyncMode.manual
   }) : super._(
           schemaObjects,
           fifoFilesFallbackPath: fifoFilesFallbackPath,

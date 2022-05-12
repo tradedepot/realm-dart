@@ -190,6 +190,7 @@ class _RealmCore {
         try {
           _realmLib.realm_sync_config_set_session_stop_policy(syncConfigPtr, config.sessionStopPolicy.index);
           _realmLib.realm_config_set_sync_config(configPtr, syncConfigPtr);
+          _realmLib.realm_sync_config_set_resync_mode(syncConfigPtr, config.clientResyncMode.index);
         } finally {
           _realmLib.realm_release(syncConfigPtr.cast());
         }
