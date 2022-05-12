@@ -18,7 +18,7 @@
 
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as path_;
 
 import 'native/realm_core.dart';
 import 'realm_class.dart';
@@ -58,7 +58,7 @@ abstract class Configuration {
   static String _initDefaultPath() {
     var path = "default.realm";
     if (Platform.isAndroid || Platform.isIOS) {
-      path = path.join(realmCore.getFilesPath(), path);
+      path = path_.join(realmCore.getFilesPath(), path);
     }
     return path;
   }

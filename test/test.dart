@@ -21,6 +21,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as path_;
 import 'package:test/test.dart' hide test;
 import 'package:test/test.dart' as testing;
 import '../lib/realm.dart';
@@ -165,8 +166,8 @@ Future<void> setupTests(List<String>? args) async {
         } catch (e) {
           print("Can not delete realm at path: $path. Did you forget to close it?");
         }
-        String pathKey = path.basenameWithoutExtension(path);
-        String realmDir = path.dirname(path);
+        String pathKey = path_.basenameWithoutExtension(path);
+        String realmDir = path_.dirname(path);
         await Directory(realmDir).list().forEach((f) {
           if (f.path.contains(pathKey)) tryDeleteFile(f, recursive: true);
         });
@@ -180,9 +181,9 @@ Matcher throws<T>([String? message]) => throwsA(isA<T>().having((dynamic excepti
 String generateRandomRealmPath() {
   var path = "${generateRandomString(10)}.realm";
   if (Platform.isAndroid || Platform.isIOS) {
-    path = path.join(Configuration.filesPath, path);
+    path = path_.join(Configuration.filesPath, path);
   } else {
-    path = path.join(Directory.systemTemp.createTempSync("realm_test_").path, path);
+    path = path_.join(Directory.systemTemp.createTempSync("realm_test_").path, path);
   }
 
   return path;
