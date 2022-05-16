@@ -798,6 +798,22 @@ class _RealmCore {
     }
   }
 
+  static void realm_change_callback(Pointer<Void> userdata) {
+    final controller = userdata.toObject<RealmNotificationController>();
+    if (controller != null) {
+      controller.update();
+    }
+  }
+
+  RealmCallbackTokenHandle subscribeRealmNotifications(Realm realm, RealmNotificationController controller) {
+    return RealmCallbackTokenHandle._(_realmLib.invokeGetPointer(() => _realmLib.realm_add_realm_changed_callback(
+          realm.handle._pointer,
+          Pointer.fromFunction(realm_change_callback),
+          controller.toWeakHandle(),
+          nullptr,
+        )));
+  }
+
   RealmNotificationTokenHandle subscribeResultsNotifications(RealmResultsHandle handle, NotificationsController controller, SchedulerHandle schedulerHandle) {
     final pointer = _realmLib.invokeGetPointer(() => _realmLib.realm_results_add_notification_callback(
           handle._pointer,

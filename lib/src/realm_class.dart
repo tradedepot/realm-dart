@@ -283,12 +283,48 @@ class Realm {
     return _subscriptions!;
   }
 
+  Stream<void> get changes {
+    return RealmNotificationController(this).createStream();
+  }
+
   @override
   // ignore: hash_and_equals
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! Realm) return false;
     return realmCore.realmEquals(this, other);
+  }
+}
+
+class RealmNotificationController {
+  final Realm _realm;
+  RealmCallbackTokenHandle? _token;
+
+  RealmNotificationController(this._realm);
+
+  void _start() {
+    _token = realmCore.subscribeRealmNotifications(_realm, this);
+  }
+
+  void _stop() {
+    if (_token != null) {
+      _token!.release();
+      _token = null;
+    }
+  }
+
+  void update() {
+    
+  }
+
+  Stream<void> createStream() {
+    final controller = StreamController<void>(
+      onListen: _start,
+      onPause: _stop,
+      onResume: _start,
+      onCancel: _stop,
+    );
+    return controller.stream;
   }
 }
 
