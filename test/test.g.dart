@@ -418,8 +418,7 @@ class Event extends _Event with RealmEntity, RealmObject {
   set id(ObjectId value) => throw RealmUnsupportedSetError();
 
   @override
-  String? get name =>
-      RealmObject.get<String>(this, 'name') as String?;
+  String? get name => RealmObject.get<String>(this, 'name') as String?;
   @override
   set name(String? value) => RealmObject.set(this, 'name', value);
 
@@ -448,8 +447,7 @@ class Event extends _Event with RealmEntity, RealmObject {
     return const SchemaObject(Event, 'Event', [
       SchemaProperty('_id', RealmPropertyType.objectid,
           mapTo: '_id', primaryKey: true),
-      SchemaProperty('name', RealmPropertyType.string,
-          mapTo: 'name', optional: true),
+      SchemaProperty('name', RealmPropertyType.string, optional: true),
       SchemaProperty('boolQueryField', RealmPropertyType.bool,
           mapTo: 'boolQueryField', optional: true),
       SchemaProperty('intQueryField', RealmPropertyType.int,

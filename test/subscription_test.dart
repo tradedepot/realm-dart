@@ -35,7 +35,7 @@ void testSubscriptions(String name, FutureOr<void> Function(Realm) tester) async
     final app = App(appConfiguration);
     final credentials = Credentials.anonymous();
     final user = await app.logIn(credentials);
-    final configuration = Configuration.flexibleSync(user, [Task.schema, Schedule.schema]);
+    final configuration = Configuration.flexibleSync(user, [Task.schema, Schedule.schema, Event.schema]);
     final realm = getRealm(configuration);
     await tester(realm);
   });
