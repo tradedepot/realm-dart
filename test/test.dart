@@ -109,7 +109,6 @@ class _Event {
   @PrimaryKey()
   @MapTo('_id')
   late ObjectId id;
-  @MapTo('stringQueryField')
   late String? name;
   @MapTo('boolQueryField')
   late bool? isCompleted;

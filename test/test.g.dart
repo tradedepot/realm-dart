@@ -405,7 +405,7 @@ class Event extends _Event with RealmEntity, RealmObject {
     int? durationInMinutes,
   }) {
     RealmObject.set(this, '_id', id);
-    RealmObject.set(this, 'stringQueryField', name);
+    RealmObject.set(this, 'name', name);
     RealmObject.set(this, 'boolQueryField', isCompleted);
     RealmObject.set(this, 'intQueryField', durationInMinutes);
   }
@@ -419,9 +419,9 @@ class Event extends _Event with RealmEntity, RealmObject {
 
   @override
   String? get name =>
-      RealmObject.get<String>(this, 'stringQueryField') as String?;
+      RealmObject.get<String>(this, 'name') as String?;
   @override
-  set name(String? value) => RealmObject.set(this, 'stringQueryField', value);
+  set name(String? value) => RealmObject.set(this, 'name', value);
 
   @override
   bool? get isCompleted =>
@@ -448,8 +448,8 @@ class Event extends _Event with RealmEntity, RealmObject {
     return const SchemaObject(Event, 'Event', [
       SchemaProperty('_id', RealmPropertyType.objectid,
           mapTo: '_id', primaryKey: true),
-      SchemaProperty('stringQueryField', RealmPropertyType.string,
-          mapTo: 'stringQueryField', optional: true),
+      SchemaProperty('name', RealmPropertyType.string,
+          mapTo: 'name', optional: true),
       SchemaProperty('boolQueryField', RealmPropertyType.bool,
           mapTo: 'boolQueryField', optional: true),
       SchemaProperty('intQueryField', RealmPropertyType.int,

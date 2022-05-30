@@ -504,7 +504,9 @@ Future<void> main([List<String>? args]) async {
 
     realm.subscriptions.update((mutableSubscriptions) {
       mutableSubscriptions.removeByQuery(realm.all<Event>());
-      mutableSubscriptions.add(realm.query<Event>(r'stringQueryField BEGINSWITH $0 AND boolQueryField == $1 AND intQueryField > $2', ["NPMG", true, 20]),
+
+      //Make a query with not quaryable field. Use 'name' instead of 'stringQueryField'
+      mutableSubscriptions.add(realm.query<Event>(r'name BEGINSWITH $0 AND boolQueryField == $1 AND intQueryField > $2', ["NPMG", true, 20]),
           name: "filter");
     });
 
